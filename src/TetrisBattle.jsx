@@ -423,67 +423,68 @@ export default function TetrisBattle() {
   );
 
   const B = BS;
-  const gameWidth = COLS*B + 10 + 96;
-  const others = Object.values(otherPlayers);
+
+  const gameWidth = COLS*B + 10 + 96; // canvas + gap + yan panel
 
   return (
     <div style={{background:"#07070e",minHeight:"100dvh",display:"flex",flexDirection:"column",alignItems:"center",fontFamily:"'Orbitron',monospace",paddingTop:8,overflow:"hidden"}}>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap');*{box-sizing:border-box;margin:0;padding:0;}body{background:#07070e;}button{-webkit-tap-highlight-color:transparent;}`}</style>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap');*{box-sizing:border-box;margin:0;padding:0;}body{background:#07070e;}`}</style>
 
-      {/* Üst bar — oyun alanıyla hizalı */}
+      {/* Üst bar — oyun alanıyla aynı genişlikte */}
       <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",width:gameWidth,marginBottom:8}}>
         <div style={{textAlign:"center"}}>
           <div style={{fontSize:8,color:"#06d6a088",letterSpacing:"0.2em"}}>SATIR</div>
           <div style={{fontSize:20,fontWeight:900,color:"#06d6a0"}}>{ui.lines}</div>
         </div>
-        <div style={{fontSize:15,fontWeight:900,letterSpacing:"0.25em",color:"#fff"}}>TETRİS BATTLE</div>
+        <div style={{fontSize:15,fontWeight:900,letterSpacing:"0.25em",color:"#fff"}}>TETRİS</div>
         <div style={{textAlign:"center"}}>
           <div style={{fontSize:8,color:"#8338ec88"}}>SEVİYE</div>
           <div style={{fontSize:20,fontWeight:700,color:"#8338ec"}}>{ui.level}</div>
         </div>
       </div>
 
+      {/* Oyun alanı */}
       <div style={{display:"flex",gap:10,padding:"0 8px",alignItems:"flex-start"}}>
-        <div style={{position:"relative",flexShrink:0}}>
+        <div style={{position:"relative"}}>
           <canvas ref={canvasRef} width={COLS*B} height={ROWS*B}
             style={{display:"block",border:"1px solid #1a1a2e",boxShadow:"0 0 24px rgba(0,245,255,0.05)"}}/>
-          {eliminated && (
-            <div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:"rgba(7,7,14,0.9)",backdropFilter:"blur(4px)"}}>
-              <div style={{fontSize:18,fontWeight:900,color:"#ff006e",textShadow:"0 0 20px #ff006e88",marginBottom:6,letterSpacing:"0.1em"}}>ELENDİN</div>
-              <div style={{fontSize:11,color:"#ffffff44",letterSpacing:"0.1em"}}>Diğerlerini izle...</div>
+          {ui.over && (
+            <div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:"rgba(7,7,14,0.94)",backdropFilter:"blur(6px)"}}>
+              <div style={{fontSize:18,fontWeight:900,color:"#ff006e",letterSpacing:"0.1em",textShadow:"0 0 20px #ff006e88",marginBottom:6}}>
+                {ui.over&&ui.lines===0?"TETRİS":"GAME OVER"}
+              </div>
+              <div
+                onPointerDown={startGame}
+                style={{border:"1.5px solid #00f5ff",color:"#00f5ff",fontFamily:"'Orbitron',monospace",fontSize:11,letterSpacing:"0.2em",padding:"10px 24px",cursor:"pointer",boxShadow:"0 0 16px #00f5ff44",userSelect:"none"}}
+              >{ui.lines>0?"TEKRAR":"BAŞLA"}</div>
             </div>
           )}
         </div>
-
-        <div style={{display:"flex",flexDirection:"column",gap:8,minWidth:0}}>
-          <div style={{background:"#0d0d1a",border:"1px solid #1a1a2e",padding:8,borderRadius:4}}>
-            <div style={{fontSize:7,color:"#00f5ff88",letterSpacing:"0.2em",marginBottom:6}}>SONRAKİ</div>
-            <canvas ref={nxtRef} width={88} height={88} style={{display:"block"}}/>
-          </div>
-          {others.length > 0 && (
-            <div style={{background:"#0d0d1a",border:"1px solid #1a1a2e",padding:6,borderRadius:4}}>
-              <div style={{fontSize:7,color:"#ffffff44",letterSpacing:"0.2em",marginBottom:6}}>OYUNCULAR</div>
-              <div style={{display:"flex",flexDirection:"column",gap:6}}>
-                {others.map(p => (
-                  <MiniBoard key={p.id} board={p.board} alive={p.alive} nickname={p.nickname}/>
-                ))}
-              </div>
-            </div>
-          )}
+        <div style={{background:"#0d0d1a",border:"1px solid #1a1a2e",padding:8,borderRadius:4}}>
+          <div style={{fontSize:7,color:"#00f5ff88",letterSpacing:"0.2em",marginBottom:6}}>SONRAKİ</div>
+          <canvas ref={nxtRef} width={88} height={88} style={{display:"block"}}/>
         </div>
       </div>
 
-      <div style={{marginTop:12,display:"flex",flexDirection:"column",alignItems:"center",gap:10,width:"100%",maxWidth:320,padding:"0 12px"}}>
-        <Btn label="↻" color="#8338ec" w={72} h={56} fs={22} onPress={()=>act("T")}/>
+      {/* Kontroller */}
+      <div style={{marginTop:14,display:"flex",flexDirection:"column",alignItems:"center",gap:10,width:"100%",maxWidth:320,padding:"0 12px"}}>
+        {/* Döndür */}
+        <Btn label="↻" color="#8338ec" w={72} h={56} fs={22} onPress={()=>act("T")} />
+
+        {/* Sol Aşağı Sağ */}
         <div style={{display:"flex",gap:10}}>
-          <Btn label="←" color="#00f5ff" onPress={()=>act("L")}/>
-          <div onPointerDown={startDown}
+          <Btn label="←" color="#00f5ff" onPress={()=>act("L")} />
+          <div
+            onPointerDown={startDown}
             style={{width:72,height:72,borderRadius:14,fontSize:26,display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(14,14,24,0.97)",border:"1.5px solid #06d6a055",color:"#06d6a0",cursor:"pointer",userSelect:"none",WebkitUserSelect:"none",touchAction:"none",boxShadow:"0 0 16px #06d6a020",fontFamily:"'Share Tech Mono',monospace",flexShrink:0}}
           >↓</div>
-          <Btn label="→" color="#00f5ff" onPress={()=>act("R")}/>
+          <Btn label="→" color="#00f5ff" onPress={()=>act("R")} />
         </div>
-        <div onPointerDown={(e)=>{e.preventDefault();act("DROP");}}
-          style={{width:"100%",height:54,borderRadius:12,fontSize:12,letterSpacing:"0.2em",display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(14,14,24,0.97)",border:"1.5px solid #ff006e55",color:"#ff006e",cursor:"pointer",userSelect:"none",WebkitUserSelect:"none",touchAction:"none",fontFamily:"'Orbitron',monospace"}}
+
+        {/* Düşür */}
+        <div
+          onPointerDown={(e)=>{e.preventDefault();act("DROP");}}
+          style={{width:"100%",height:54,borderRadius:12,fontSize:12,letterSpacing:"0.2em",display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(14,14,24,0.97)",border:"1.5px solid #ff006e55",color:"#ff006e",cursor:"pointer",userSelect:"none",WebkitUserSelect:"none",touchAction:"none",boxShadow:"0 0 16px #ff006e20",fontFamily:"'Orbitron',monospace"}}
         >⬇ DÜŞÜR</div>
       </div>
     </div>
