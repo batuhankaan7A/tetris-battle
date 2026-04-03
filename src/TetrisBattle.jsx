@@ -423,7 +423,7 @@ export default function TetrisBattle() {
   );
 
   const B = BS;
-  const gameWidth = COLS*B + 8 + 92;
+  const gameWidth = COLS*B + 10 + 96;
   const others = Object.values(otherPlayers);
 
   return (
@@ -431,22 +431,22 @@ export default function TetrisBattle() {
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Share+Tech+Mono&display=swap');*{box-sizing:border-box;margin:0;padding:0;}body{background:#07070e;}button{-webkit-tap-highlight-color:transparent;}`}</style>
 
       {/* Üst bar — oyun alanıyla hizalı */}
-      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",width:gameWidth,marginBottom:6}}>
+      <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",width:gameWidth,marginBottom:8}}>
         <div style={{textAlign:"center"}}>
-          <div style={{fontSize:8,color:"#06d6a088",letterSpacing:"0.15em"}}>SATIR</div>
-          <div style={{fontSize:18,fontWeight:900,color:"#06d6a0"}}>{ui.lines}</div>
+          <div style={{fontSize:8,color:"#06d6a088",letterSpacing:"0.2em"}}>SATIR</div>
+          <div style={{fontSize:20,fontWeight:900,color:"#06d6a0"}}>{ui.lines}</div>
         </div>
-        <div style={{fontSize:13,fontWeight:900,letterSpacing:"0.2em",color:"#fff"}}>TETRİS BATTLE</div>
+        <div style={{fontSize:15,fontWeight:900,letterSpacing:"0.25em",color:"#fff"}}>TETRİS BATTLE</div>
         <div style={{textAlign:"center"}}>
           <div style={{fontSize:8,color:"#8338ec88"}}>SEVİYE</div>
-          <div style={{fontSize:18,fontWeight:700,color:"#8338ec"}}>{ui.level}</div>
+          <div style={{fontSize:20,fontWeight:700,color:"#8338ec"}}>{ui.level}</div>
         </div>
       </div>
 
-      <div style={{display:"flex",gap:8,padding:"0 6px",alignItems:"flex-start"}}>
+      <div style={{display:"flex",gap:10,padding:"0 8px",alignItems:"flex-start"}}>
         <div style={{position:"relative",flexShrink:0}}>
           <canvas ref={canvasRef} width={COLS*B} height={ROWS*B}
-            style={{display:"block",border:"1px solid #1a1a2e",boxShadow:"0 0 20px rgba(0,245,255,0.05)"}}/>
+            style={{display:"block",border:"1px solid #1a1a2e",boxShadow:"0 0 24px rgba(0,245,255,0.05)"}}/>
           {eliminated && (
             <div style={{position:"absolute",inset:0,display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",background:"rgba(7,7,14,0.9)",backdropFilter:"blur(4px)"}}>
               <div style={{fontSize:18,fontWeight:900,color:"#ff006e",textShadow:"0 0 20px #ff006e88",marginBottom:6,letterSpacing:"0.1em"}}>ELENDİN</div>
@@ -456,13 +456,13 @@ export default function TetrisBattle() {
         </div>
 
         <div style={{display:"flex",flexDirection:"column",gap:8,minWidth:0}}>
-          <div style={{background:"#0d0d1a",border:"1px solid #1a1a2e",padding:6,borderRadius:4}}>
-            <div style={{fontSize:7,color:"#00f5ff88",letterSpacing:"0.15em",marginBottom:4}}>SONRAKİ</div>
-            <canvas ref={nxtRef} width={80} height={80} style={{display:"block"}}/>
+          <div style={{background:"#0d0d1a",border:"1px solid #1a1a2e",padding:8,borderRadius:4}}>
+            <div style={{fontSize:7,color:"#00f5ff88",letterSpacing:"0.2em",marginBottom:6}}>SONRAKİ</div>
+            <canvas ref={nxtRef} width={88} height={88} style={{display:"block"}}/>
           </div>
           {others.length > 0 && (
             <div style={{background:"#0d0d1a",border:"1px solid #1a1a2e",padding:6,borderRadius:4}}>
-              <div style={{fontSize:7,color:"#ffffff44",letterSpacing:"0.15em",marginBottom:6}}>OYUNCULAR</div>
+              <div style={{fontSize:7,color:"#ffffff44",letterSpacing:"0.2em",marginBottom:6}}>OYUNCULAR</div>
               <div style={{display:"flex",flexDirection:"column",gap:6}}>
                 {others.map(p => (
                   <MiniBoard key={p.id} board={p.board} alive={p.alive} nickname={p.nickname}/>
@@ -474,7 +474,7 @@ export default function TetrisBattle() {
       </div>
 
       <div style={{marginTop:12,display:"flex",flexDirection:"column",alignItems:"center",gap:10,width:"100%",maxWidth:320,padding:"0 12px"}}>
-        <Btn label="↻" color="#8338ec" w={72} h={54} fs={22} onPress={()=>act("T")}/>
+        <Btn label="↻" color="#8338ec" w={72} h={56} fs={22} onPress={()=>act("T")}/>
         <div style={{display:"flex",gap:10}}>
           <Btn label="←" color="#00f5ff" onPress={()=>act("L")}/>
           <div onPointerDown={startDown}
@@ -483,7 +483,7 @@ export default function TetrisBattle() {
           <Btn label="→" color="#00f5ff" onPress={()=>act("R")}/>
         </div>
         <div onPointerDown={(e)=>{e.preventDefault();act("DROP");}}
-          style={{width:"100%",height:52,borderRadius:12,fontSize:12,letterSpacing:"0.2em",display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(14,14,24,0.97)",border:"1.5px solid #ff006e55",color:"#ff006e",cursor:"pointer",userSelect:"none",WebkitUserSelect:"none",touchAction:"none",fontFamily:"'Orbitron',monospace"}}
+          style={{width:"100%",height:54,borderRadius:12,fontSize:12,letterSpacing:"0.2em",display:"flex",alignItems:"center",justifyContent:"center",background:"rgba(14,14,24,0.97)",border:"1.5px solid #ff006e55",color:"#ff006e",cursor:"pointer",userSelect:"none",WebkitUserSelect:"none",touchAction:"none",fontFamily:"'Orbitron',monospace"}}
         >⬇ DÜŞÜR</div>
       </div>
     </div>
