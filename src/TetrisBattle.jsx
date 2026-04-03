@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { io } from "socket.io-client";
 
 // !! Deploy ettikten sonra buraya EC2 public IP'ni yaz !!
-const SERVER_URL = "http://16.170.223.130:3001";
+const SERVER_URL = "https://tetris-server-production-e3c5.up.railway.app/";
 
 const COLS = 10, ROWS = 20;
 const PIECES = {
